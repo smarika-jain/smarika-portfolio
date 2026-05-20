@@ -43,7 +43,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}
     >
       <body
-        className="min-h-dvh bg-background text-foreground font-sans"
+        className="min-h-dvh overflow-x-hidden bg-background text-foreground font-sans"
         suppressHydrationWarning
       >
         {children}

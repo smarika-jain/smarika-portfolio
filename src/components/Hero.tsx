@@ -78,19 +78,19 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-5xl px-6 pb-32 pt-40 md:pb-44 md:pt-48">
         <div className="grid gap-14 md:grid-cols-[1.4fr_1fr] md:items-center md:gap-16">
-          <div>
+          <div className="min-w-0">
             <motion.p
               {...entrance(0)}
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-subtle"
+              className="flex flex-wrap items-center font-mono text-[11px] uppercase tracking-[0.2em] text-subtle"
             >
-              GTM Engineer
+              <span className="whitespace-nowrap">GTM Engineer</span>
               <AccentBullet />
-              India
+              <span className="whitespace-nowrap">India</span>
             </motion.p>
 
             <motion.h1
               {...entrance(0.1)}
-              className="mt-8 max-w-3xl text-balance text-4xl font-medium leading-[1.05] tracking-[-0.02em] text-stone-100 sm:text-5xl md:text-6xl"
+              className="mt-8 max-w-full text-balance break-words text-4xl font-medium leading-[1.05] tracking-[-0.02em] text-stone-100 sm:text-5xl md:max-w-3xl md:text-6xl"
             >
               I build AI automation systems that{" "}
               <span className="text-white underline decoration-2 decoration-[#f97316]/70 underline-offset-[6px]">
@@ -108,10 +108,10 @@ export function Hero() {
 
             <motion.p
               {...entrance(0.3)}
-              className="mt-10 font-mono text-xs text-subtle"
+              className="mt-10 flex max-w-full flex-wrap items-center gap-y-1.5 font-mono text-xs text-subtle"
             >
               {STACK.map((tool, i) => (
-                <span key={tool}>
+                <span key={tool} className="whitespace-nowrap">
                   {tool}
                   {i < STACK.length - 1 && <AccentBullet />}
                 </span>
