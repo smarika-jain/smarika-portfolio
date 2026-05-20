@@ -1,0 +1,58 @@
+---
+title: "AI Lead Tagging & Multi-Platform CRM Sync"
+category: "CRM Operations"
+client: "B2B sales teams"
+description: "An n8n workflow that captures replies from HeyReach and Instantly, classifies intent with GPT-4, and syncs a unified CRM across both platforms in Google Sheets."
+stack: ["n8n", "HeyReach API", "Instantly API", "OpenAI GPT-4", "Google Sheets"]
+metrics:
+  - label: "Manual classification"
+    value: "Eliminated"
+    verified: false
+  - label: "Lead data captured"
+    value: "100%"
+    verified: false
+  - label: "Platforms unified"
+    value: "2"
+    verified: false
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/lead-tagging-crm-sync.png"
+    caption: "n8n workflow: dual-platform reply capture + intent classification"
+order: 5
+featured: false
+---
+
+## The Problem
+
+Running outreach across HeyReach (LinkedIn) and Instantly (email) creates two parallel CRMs that never talk to each other. Leads get lost between platforms. There's no structured data on engagement intent, so high-priority replies sit alongside dismissive ones in the same inbox.
+
+Manual classification of replies takes hours and is inconsistent across team members.
+
+## What I Built
+
+A reply capture and classification workflow that runs across both platforms.
+
+### How It Works
+
+1. **Dual webhook listeners.** Workflow listens to incoming message webhooks from both HeyReach and Instantly simultaneously.
+
+2. **Classification with GPT-4.** Each reply is sent to GPT-4 with a classification prompt that returns exactly one tag: Interested (explicit positive signal), Not Interested (explicit rejection), or Follow-up Needed (unclear, out-of-office, non-committal).
+
+3. **Native tag assignment.** In HeyReach, classified tags are applied directly to the lead using the native tag feature. In Instantly, tags are captured in the unified CRM sheet (Instantly does not have a native equivalent).
+
+4. **Unified CRM record.** A single Google Sheet captures lead name, email, LinkedIn profile, job title, company, campaign source, reply text, date, classification tag, and platform source. One row per reply, regardless of which platform it came from.
+
+### Why This Matters
+
+Segmentation drives outreach strategy. With every reply classified into one of three buckets, downstream workflows can route Interested leads into a sales sequence, schedule follow-ups for Follow-up Needed leads, and suppress Not Interested leads from future campaigns. Without classification, all of this requires manual review.
+
+## The Results
+
+Estimated impact based on benchmark deployments:
+
+- **Manual classification eliminated.** Replies are tagged in seconds, not hours.
+- **100%** of lead data captured in one unified CRM across both platforms.
+- **Smart segmentation enabled.** Tag-based filtering lets the team prioritize follow-ups intelligently.
+
+Note: Estimated numbers. Verified production data from client campaigns coming soon.

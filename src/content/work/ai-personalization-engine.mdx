@@ -1,0 +1,60 @@
+---
+title: "AI Personalization Engine"
+category: "Outreach"
+client: "B2B outbound teams"
+description: "An n8n workflow that scrapes prospect websites and generates 3-paragraph human-sounding icebreakers using GPT-4. Built to replace generic templates with personalization at scale."
+stack: ["n8n", "OpenAI GPT-4", "HTTP requests", "Google Sheets"]
+metrics:
+  - label: "Reply rate lift"
+    value: "5x"
+    verified: false
+  - label: "Icebreakers per day"
+    value: "1,000+"
+    verified: false
+  - label: "Hours saved monthly"
+    value: "40+"
+    verified: false
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/ai-personalization-engine.png"
+    caption: "n8n workflow: website scraping + GPT-4 icebreaker generation"
+order: 3
+featured: false
+---
+
+## The Problem
+
+Generic outreach gets 2 to 3% reply rates. Manually writing personalized multi-line icebreakers for hundreds of leads takes 40+ hours per month. Most outbound emails sound like templates with the prospect's first name swapped in, not like a real person who read their site.
+
+Teams either send generic outreach at scale (low replies, fast burnout) or write personalized outreach by hand (good replies, slow throughput). Both options are bad.
+
+## What I Built
+
+An n8n workflow that scrapes prospect company websites (homepage and About page), feeds the content to GPT-4 with a detailed copywriting system prompt, and generates 3-part human-sounding icebreakers grounded in actual site content.
+
+### The Pipeline
+
+1. **Scrape company website.** Pulls homepage and About page HTML for each lead.
+
+2. **Detect and handle blocked domains.** Some sites block scraping. The workflow detects this, marks the lead as blocked, and routes through retry logic.
+
+3. **Generate icebreaker with GPT-4.** Custom system prompt enforces three rules: one specific insight only (not generic), conversational tone (no corporate jargon), and content grounded in the actual site (no invented claims).
+
+4. **Quality filtering.** Generated icebreakers are checked against quality rules before approval. Outputs that fail (too generic, too long, hallucinated content) are flagged for regeneration.
+
+5. **Deploy to campaigns.** Approved icebreakers are written to Google Sheets, ready for immediate campaign deployment in Instantly or HeyReach.
+
+### Why This Works
+
+The prompt isn't just "write a personalized icebreaker." It's structured copywriting instruction with explicit rules about what to extract from the source content, what to mention, what to never say, and what tone to hit. The model becomes a trained copywriter, not a generic content generator.
+
+## The Results
+
+Estimated impact based on benchmark deployments:
+
+- **1,000+** personalized 3-paragraph icebreakers per day
+- **5x** improvement in reply rates (from 2 to 3% to 12 to 15%)
+- **40+** hours saved per SDR per month on manual copywriting
+
+Note: Estimated numbers. Verified production data from client campaigns coming soon.

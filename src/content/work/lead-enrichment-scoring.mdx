@@ -1,0 +1,58 @@
+---
+title: "Lead Enrichment & Scoring"
+category: "Lead Enrichment"
+client: "B2B sales teams"
+description: "An n8n workflow that takes raw lead data, classifies job titles into functional categories, parses location strings, and assigns priority tier scores. Replaces hours of manual SDR work."
+stack: ["n8n", "OpenAI GPT-4", "Google Sheets"]
+metrics:
+  - label: "Cost saved per 1K leads"
+    value: "$150"
+    verified: false
+  - label: "Hours saved weekly"
+    value: "20 to 40"
+    verified: false
+  - label: "Tiers assigned"
+    value: "3"
+    verified: false
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/lead-enrichment-scoring.png"
+    caption: "n8n workflow: job title classification + location parsing + priority scoring"
+order: 6
+featured: false
+---
+
+## The Problem
+
+Raw lead lists arrive messy. Job titles vary wildly (CFO, Chief Financial Officer, Head of Finance, Director of Finance all mean the same thing). Locations come as unstructured strings ("Mumbai, MH, India" vs "Bombay" vs "Mumbai India"). Without normalization, downstream segmentation falls apart.
+
+SDRs end up manually tagging job functions and parsing locations row by row. The work is slow, inconsistent across team members, and prone to error.
+
+## What I Built
+
+A two-stage enrichment workflow that runs over the entire lead list.
+
+### Stage 1: Job Title Classification
+
+GPT-4 reads each job title and returns: a functional category (Sales, Operations, Tech, Finance, HR, Marketing, Founder, Investor, or Other), and a seniority tag (Junior, Mid, Senior, Executive).
+
+The model handles synonyms (CFO and Chief Financial Officer both classify as Finance Executive), acronyms (CMO, CTO, CRO all classify correctly), and ambiguous titles (Head of Growth gets classified as Marketing Executive based on context).
+
+### Stage 2: Location Enrichment & Priority Scoring
+
+Raw location strings are parsed into structured fields: city, state, country. Each lead then receives a priority tier (Tier 1 = target first, Tier 2 = secondary, Tier 3 = lower priority) based on a configurable scoring rubric the client defines (typically a mix of geography, company size, and role seniority).
+
+### Why This Design
+
+Both stages run as separate n8n workflows that read from and write to the same Google Sheet. This means the client can re-run stage 2 (priority scoring) without re-running stage 1 (job title classification) when they want to adjust their priority rubric. Decoupled stages = faster iteration.
+
+## The Results
+
+Estimated impact for outbound teams running this workflow:
+
+- **$150 saved per 1,000 leads** in manual SDR labor
+- **20 to 40 hours saved per week** for teams handling hundreds or thousands of leads
+- **Roughly 50K to 1L INR per month** in operational efficiency depending on team size
+
+Note: Estimated numbers based on labor cost benchmarks. Verified production data from client deployments coming soon.

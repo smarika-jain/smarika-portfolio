@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm dark base — subtly browny, not pure neutral */
+  --color-background: #0f0c0a;
+  --color-surface: #181410;
+  --color-surface-hover: #1f1813;
+  --color-border-subtle: #221c16;
+  --color-border: #2d251d;
+
+  /* Text — primary stays bright; secondary/tertiary shift to warm stone family */
+  --color-foreground: #fafafa;
+  --color-muted: #a8a29e;
+  --color-subtle: #78716c;
+
+  /* Single accent — warm orange. Used sparingly. */
+  --color-accent: #f97316;
+  --color-accent-muted: rgba(249, 115, 22, 0.15);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 4rem;
+  }
+
+  body {
+    background-color: var(--color-background);
+    background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    );
+    background-size: 32px 32px;
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-border);
+    color: var(--color-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(249, 115, 22, 0.5);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+}

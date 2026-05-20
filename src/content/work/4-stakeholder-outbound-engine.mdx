@@ -1,0 +1,130 @@
+---
+title: "4-Stakeholder Outbound Engine"
+category: "Lead Generation"
+client: "AI recruitment platform (B2B)"
+description: "An outbound system that runs while the client sleeps. Scrapes 12K jobs a day, finds up to 4 people per company worth contacting, and never sends the same person two emails."
+stack:
+  - "n8n"
+  - "Apify"
+  - "OpenAI"
+  - "AnyMail Finder"
+  - "Instantly"
+  - "LinkedIn API"
+  - "Google Sheets"
+  - "Apps Script"
+metrics:
+  - label: "Opportunities generated"
+    value: "129"
+    verified: true
+  - label: "Qualified leads, 54 days"
+    value: "10,753"
+    verified: true
+  - label: "Outreach model"
+    value: "4-tier"
+    verified: true
+  - label: "Routing + escalation"
+    value: "15 paths"
+    verified: true
+loom: "https://www.loom.com/embed/dfb6b8b045464f86bb90c612504ccd44"
+workflows:
+  hero:
+    src: "/workflows/4-stakeholder-architecture.png"
+    caption: "11 orchestrated workflows · master orchestrator + error handler"
+  inline:
+    - src: "/workflows/4-stakeholder-path-routing.png"
+      caption: "Workflow 6 · 15-path routing engine"
+      placement: "what-i-built"
+    - src: "/workflows/4-stakeholder-escalation.png"
+      caption: "Workflow 7 · Multi-stage escalation with kill switch"
+      placement: "what-i-built"
+    - src: "/workflows/4-stakeholder-error-handler.png"
+      caption: "Dedicated error handler · catches failures across all 11 workflows"
+      placement: "what-i-built"
+# Campaign result screenshots (Instantly / HeyReach dashboards).
+results:
+  - src: "/results/4-stakeholder-instantly.png"
+    caption: "Instantly · 54-day campaign performance"
+order: 1
+featured: true
+---
+
+## The Problem
+
+The client (an AI recruitment platform) needed to reach hiring managers at companies actively posting jobs. The challenge: most B2B outreach hits one contact (the Job Poster) and stops there. If that person doesn't reply, the lead dies.
+
+They needed a system that could identify the right people at each company, contact them in the right order, and intelligently escalate when nobody replied, without ever spamming someone who'd already engaged.
+
+## What I Built
+
+A 4-stakeholder outbound engine that runs daily. The system is composed of 11 orchestrated workflows with a master "Run Full Workflow" at the top and a dedicated error handler at the bottom. Each workflow has a single responsibility: scraping, qualification, four parallel email-finder workflows (one per stakeholder role), the 15-path router, the escalation engine, reply capture, and CRM sync. The error handler runs across all of them, catching failures system-wide.
+
+This isn't a single workflow. It's a small automation operating system.
+
+### The Pipeline
+
+1. **Daily LinkedIn scrape.** ~12,000–15,000 jobs pulled per day across configurable hiring signals (job title, location, industry, employment type).
+2. **Qualification engine.** Filters scraped jobs by employee count range, employment type, and applicant count. ~400–500 qualified leads per day.
+3. **Multi-stakeholder email discovery.** Four parallel workflows find emails for JP, FH, CHRO, and Founder using AnyMail Finder. 77% of qualified leads end up with at least one stakeholder email; 64% have a Founder email.
+4. **15-path routing.** Every lead gets exactly one path assigned based on which stakeholders have valid emails. Each path defines a Stage 1 contact (or pair), a Stage 2 escalation, and sometimes a Stage 3.
+
+<WorkflowImage
+  src={props.workflows?.inline?.[0]?.src}
+  caption={props.workflows?.inline?.[0]?.caption}
+  alt="15-path routing engine workflow"
+  size="inline"
+/>
+
+5. **Campaign enrollment.** Stage 1 contacts are enrolled into one of 4 Instantly campaigns (JP, FH, CHRO, Founder), each with Liquid Syntax conditional variables for peer cross-mentions and escalation references.
+6. **Automated escalation.** A separate workflow runs daily, checking enrolled leads for 10-day no-reply thresholds. Escalates to CHRO or Founder per the path's hierarchy.
+
+<WorkflowImage
+  src={props.workflows?.inline?.[1]?.src}
+  caption={props.workflows?.inline?.[1]?.caption}
+  alt="Multi-stage escalation workflow with kill switch"
+  size="inline"
+/>
+
+7. **Kill switch.** Any reply from any stakeholder immediately stops the entire escalation chain for that lead.
+
+### Why This Design
+
+Single-contact cold outreach gets 1–3% reply rates because the right person rarely sees the email. By contacting multiple stakeholders intelligently, with peer cross-mentions and escalation references, the system increases the surface area for response without crossing into spam territory.
+
+The 15-path system isn't arbitrary. Each combination of stakeholder availability creates a distinct optimal sequence. A lead where only the Founder is reachable runs a different campaign than one where JP + FH are both available. Same architecture, completely different message strategy.
+
+And underneath all of this sits a dedicated error handler that catches failures across every workflow in the system.
+
+<WorkflowImage
+  src={props.workflows?.inline?.[2]?.src}
+  caption={props.workflows?.inline?.[2]?.caption}
+  alt="Dedicated error handler workflow"
+  size="inline"
+/>
+
+## Live Walkthrough
+
+<LoomEmbed
+  url="https://www.loom.com/embed/dfb6b8b045464f86bb90c612504ccd44"
+  title="4-Stakeholder Outbound Engine: Live Walkthrough"
+  caption="Live Walkthrough · 4-Stakeholder Outbound Engine"
+/>
+
+## The Results
+
+Over a 54-day window:
+
+- 10,753 qualified leads in pipeline
+- 18,903 stakeholder emails identified across all 4 roles
+- 129 opportunities generated (bottom-of-funnel)
+
+The system runs multi-touch sequences (initial email + 3 follow-ups per stakeholder) across 4 parallel campaigns. Open rate isn't a primary KPI. Apple Mail Privacy Protection has made it unreliable industry-wide, so I prioritize reply and opportunity metrics. The system is fully autonomous on a daily schedule; the client triggers nothing manually.
+
+<ResultsGallery results={props.results} />
+
+## Documentation
+
+This system shipped with a 26-page operating manual covering account setup, all 15 outreach paths, escalation logic, troubleshooting, and the 10 campaign automation buttons embedded in the client's Google Sheet.
+
+Clients getting handed an automation system without documentation can't operate it. Mine come with operating manuals.
+
+<SOPDownload slug="4-stakeholder-outbound-engine" />

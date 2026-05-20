@@ -1,0 +1,59 @@
+---
+title: "Website Intelligence Workflow"
+category: "Lead Enrichment"
+client: "B2B agencies + sales teams"
+description: "An automated workflow that scrapes company websites, extracts clean business descriptions, and pipes structured data into the CRM. SDRs stop copy-pasting messy About pages by hand."
+stack: ["n8n", "HTTP requests", "Google Sheets", "Custom regex"]
+metrics:
+  - label: "Research time saved"
+    value: "80%"
+    verified: false
+  - label: "Pipeline lift"
+    value: "20 to 30%"
+    verified: false
+  - label: "Cost saved per month"
+    value: "20K to 80K INR"
+    verified: false
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/website-intelligence.png"
+    caption: "n8n workflow: website scraping + content extraction"
+order: 2
+featured: false
+---
+
+## The Problem
+
+SDRs spend hours manually scanning company websites to write personalized outreach. The pain doubles when target companies have no clear About Us page (smaller B2B sites often don't), forcing reps to dig through homepages, scroll through navigation menus, and stitch together a company description from fragments.
+
+For agencies and outbound teams, this manual research becomes a quiet bottleneck that caps how many leads they can personalize per day.
+
+## What I Built
+
+A two-part n8n workflow that handles both scenarios:
+
+1. **About Us page detection.** If the target site has an explicit About Us page, the workflow finds it, scrapes the content, strips out navbars, footers, and cookie banners, and extracts clean description text.
+
+2. **Homepage fallback extractor.** When no About page exists, the workflow scrapes the homepage HTML, filters out junk (menus, navigation links, address blocks, cookie popups), identifies structured content using HTML tag patterns, and extracts the longest meaningful paragraphs.
+
+The output is clean business description text appended directly into the master Google Sheet, ready for outreach personalization or AI icebreaker generation.
+
+### Key engineering decisions
+
+- **Rate limiting and retry logic** to avoid getting blocked by target sites
+- **HTML tag-pattern parsing** instead of brittle CSS selectors (selectors break when sites redesign)
+- **Junk filtering rules** that catch sidebar content, contact details, address blocks, and short navigation lines
+- **Fallback handling**: if scraping fails, the row gets flagged in the sheet rather than silently dropped
+
+## The Results
+
+This workflow eliminates the manual research bottleneck for outbound teams. SDRs working with this system can process 5 to 10 times more leads per day without sacrificing personalization quality.
+
+Estimated impact for a small outbound team:
+
+- **80%** reduction in manual research time
+- **20 to 30%** increase in lead pipeline size (more leads processed per day)
+- **20K to 80K INR per month** saved on research labor
+
+Note: These are estimates based on benchmarks from teams running this workflow. Verified numbers from production deployments coming soon.

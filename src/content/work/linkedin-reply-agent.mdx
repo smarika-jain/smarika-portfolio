@@ -1,0 +1,64 @@
+---
+title: "Automated LinkedIn Reply Agent"
+category: "Reply Management"
+client: "B2B sales teams"
+description: "An n8n workflow that monitors LinkedIn messages, detects escalation triggers, and auto-replies with context-aware responses using GPT-4 and a FAQ knowledge base."
+stack: ["n8n", "HeyReach API", "OpenAI GPT-4", "Google Sheets"]
+metrics:
+  - label: "Replies automated"
+    value: "85%"
+    verified: false
+  - label: "Hours saved weekly"
+    value: "15 to 20"
+    verified: false
+  - label: "Response time"
+    value: "<2 min"
+    verified: false
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/linkedin-reply-agent.png"
+    caption: "n8n workflow: LinkedIn reply monitoring + auto-response with escalation"
+order: 4
+featured: false
+---
+
+## The Problem
+
+Responding to LinkedIn messages manually takes hours daily. Worse, escalation cases (complaints, refunds, legal issues, bug reports) get either missed or auto-replied to with generic responses, damaging customer relationships at exactly the moments that matter most.
+
+Teams need automation that handles the routine while protecting the sensitive.
+
+## What I Built
+
+A reply automation workflow that monitors LinkedIn inboxes via the HeyReach API and routes incoming messages through a decision tree before deciding whether to auto-respond.
+
+### How It Works
+
+1. **Monitor inboxes.** Workflow polls HeyReach for new LinkedIn messages and retrieves full conversation history (not just the latest message).
+
+2. **Escalation detection.** Each message is scanned for escalation keywords (complaint, refund, error, legal, security, bug, etc.). Matches get routed to the human team. No auto-reply fires.
+
+3. **FAQ retrieval.** For non-escalation messages, the workflow fetches relevant FAQs from a Google Sheets knowledge base.
+
+4. **Personalized reply generation.** GPT-4 generates a context-aware reply using: full conversation history, relevant FAQs, and the lead's profile data. Tone matches the lead's communication style.
+
+5. **Send and log.** Reply goes out via LinkedIn. All interactions are logged to a Google Sheet for auditing and pattern review.
+
+### Key engineering decisions
+
+- **Full conversation context** sent to GPT-4, not just the latest message (responses make sense in conversation flow)
+- **Whitelist over blacklist for keywords**: escalation keywords are explicit; everything else goes to auto-reply (better to over-escalate than miss a sensitive case)
+- **Audit log** for every reply (clients can review what went out and adjust the FAQ accordingly)
+- **Tone matching**: if the lead writes casually, the reply is casual; if they write formally, the reply matches
+
+## The Results
+
+Estimated impact based on benchmark deployments:
+
+- **85%** of replies fully automated
+- **15 to 20** hours saved weekly on inbox management
+- **Under 2 minutes** average response time (vs hours for manual handling)
+- Zero escalations slipped through to auto-reply in benchmark runs
+
+Note: Estimated numbers. Verified production data from client campaigns coming soon.

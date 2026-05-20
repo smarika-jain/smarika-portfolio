@@ -1,0 +1,67 @@
+---
+title: "Instagram Bio & Posts Scraper"
+category: "Content Intelligence"
+client: "Agencies + influencer marketing teams"
+description: "An n8n workflow that takes a list of Instagram handles and extracts bios, recent posts, and video transcriptions for influencer evaluation at scale."
+stack: ["n8n", "Apify", "Gemini 2.5 Flash", "OpenAI Whisper", "Google Sheets"]
+metrics:
+  - label: "Manual research replaced"
+    value: "Full"
+    verified: false
+  - label: "Cost saved per month"
+    value: "50K to 1.5L INR"
+    verified: false
+  - label: "Data points per handle"
+    value: "4"
+    verified: false
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/instagram-scraper.png"
+    caption: "n8n workflow: Instagram bio + post scraping + video transcription"
+order: 7
+featured: false
+---
+
+## The Problem
+
+Agencies evaluating influencers for campaigns spend hours manually collecting bios, scrolling through recent posts, and watching Reels to understand each creator's voice, niche, and audience. At scale (50+ influencers per campaign), this becomes a research bottleneck that delays campaign launches by days.
+
+## What I Built
+
+A scraping workflow that takes a list of Instagram handles and returns a structured dataset for each one.
+
+### What It Captures
+
+For each handle:
+
+1. **Bio text** scraped from the profile
+2. **Last 3 posts** with caption text and media URLs
+3. **Video transcriptions** for any Reels in the recent posts (using OpenAI Whisper)
+4. **Combined intelligence row** in Google Sheets: handle, bio, post 1 caption, post 2 caption, post 3 caption, video transcript
+
+### How It Works
+
+1. **Bio scraping.** Apify's Instagram profile scraper pulls bio and profile metadata.
+
+2. **Post extraction.** A separate Apify actor pulls the most recent 3 posts per handle.
+
+3. **Video filtering.** Posts are filtered for video content (skip image-only posts).
+
+4. **Transcription.** Video URLs are downloaded and run through OpenAI Whisper for transcription. Captions provide the voice. Transcripts provide the content depth.
+
+5. **Aggregation.** All data is combined into a single row per handle in Google Sheets, ready for evaluation or AI analysis.
+
+### Why This Design
+
+Bio alone tells you what an influencer claims to be. Posts and transcripts tell you what they actually talk about. Agencies running campaigns at scale need both. The workflow captures both in one pass.
+
+## The Results
+
+Estimated impact based on benchmark deployments:
+
+- **Full replacement** of manual influencer research at scale
+- **50K to 1.5L INR per month** saved for agencies doing social audits, influencer outreach, or video content analysis
+- **4 structured data points** per handle, ready for downstream evaluation
+
+Note: Estimated numbers. Verified production data from client deployments coming soon.
