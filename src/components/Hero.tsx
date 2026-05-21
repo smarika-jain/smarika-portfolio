@@ -1,22 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, ExternalLink } from "lucide-react";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { WorkflowLines } from "@/components/WorkflowLines";
-
-const STACK = [
-  "n8n",
-  "Claude",
-  "OpenAI",
-  "Apify",
-  "Clay",
-  "Apollo",
-  "Instantly",
-  "HeyReach",
-  "Airtable",
-  "Notion",
-];
 
 /**
  * Subtle entrance: 8px translate-up + fade, easeOut, 400ms.
@@ -56,7 +43,7 @@ export function Hero() {
       id="top"
       className="relative overflow-hidden border-b border-border-subtle"
     >
-      {/* Layer A: warm radial glow behind the headline. Larger and more present than the previous white version. */}
+      {/* Layer A: warm radial glow behind the headline. */}
       <motion.div
         aria-hidden="true"
         initial={reduce ? false : { opacity: 0 }}
@@ -65,13 +52,15 @@ export function Hero() {
         className="pointer-events-none absolute left-[18%] top-[28%] h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(249,115,22,0.18)_0%,rgba(249,115,22,0.10)_25%,transparent_65%)]"
       />
 
-      {/* Layer B: animated workflow lines, behind content */}
+      {/* Layer B: animated workflow lines. Constrained to the right side on
+          desktop (around the photo) so they don't compete with the headline;
+          full-width on mobile where the photo stacks below. Softened opacity. */}
       <motion.div
         aria-hidden="true"
         initial={reduce ? false : { opacity: 0 }}
-        animate={reduce ? undefined : { opacity: 1 }}
+        animate={reduce ? undefined : { opacity: 0.6 }}
         transition={reduce ? undefined : { duration: 1.5, ease: "easeOut" }}
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-y-0 right-0 w-full opacity-60 md:w-1/2"
       >
         <WorkflowLines />
       </motion.div>
@@ -102,24 +91,12 @@ export function Hero() {
               {...entrance(0.2)}
               className="mt-7 max-w-2xl text-base leading-relaxed text-muted sm:text-lg"
             >
-              Lead sourcing, outreach personalization, and CRM automation for
-              B2B teams. Built 12+ systems for founders across the GTM stack.
-            </motion.p>
-
-            <motion.p
-              {...entrance(0.3)}
-              className="mt-10 flex max-w-full flex-wrap items-center gap-y-1.5 font-mono text-xs text-subtle"
-            >
-              {STACK.map((tool, i) => (
-                <span key={tool} className="whitespace-nowrap">
-                  {tool}
-                  {i < STACK.length - 1 && <AccentBullet />}
-                </span>
-              ))}
+              Manual outbound burns 40+ hours a week. I replace it with systems
+              that run while you sleep. 12+ shipped for B2B founders.
             </motion.p>
 
             <motion.div
-              {...entrance(0.4)}
+              {...entrance(0.3)}
               className="mt-12 flex flex-wrap items-center gap-3"
             >
               <a
@@ -137,6 +114,18 @@ export function Hero() {
                 className="inline-flex h-10 items-center rounded-md border border-[rgba(249,115,22,0.3)] px-5 text-sm font-medium text-foreground transition-colors hover:border-[rgba(249,115,22,0.6)] hover:bg-[rgba(249,115,22,0.05)]"
               >
                 Get in touch
+              </a>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 items-center gap-2 rounded-md border border-[rgba(249,115,22,0.3)] px-5 text-sm font-medium text-foreground transition-colors hover:border-[rgba(249,115,22,0.6)] hover:bg-[rgba(249,115,22,0.05)]"
+              >
+                View resume
+                <ExternalLink
+                  className="h-3.5 w-3.5 text-accent"
+                  aria-hidden="true"
+                />
               </a>
             </motion.div>
           </div>
@@ -169,7 +158,7 @@ export function Hero() {
         initial={reduce ? false : { opacity: 0 }}
         animate={reduce ? undefined : { opacity: 1 }}
         transition={
-          reduce ? undefined : { duration: 0.4, ease: "easeOut", delay: 0.6 }
+          reduce ? undefined : { duration: 0.4, ease: "easeOut", delay: 0.5 }
         }
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >

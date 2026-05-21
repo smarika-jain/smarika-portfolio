@@ -17,19 +17,19 @@ const NARRATIVE = [
 
 const CAPABILITIES = [
   {
-    title: "Lead Sourcing & Enrichment",
+    title: "Replace manual outreach with systems that scale",
     description:
-      "LinkedIn scraping, website intelligence, AI-powered lead scoring across thousands of records.",
+      "Founders running 50-hour weeks of outbound get their time back. I've shipped systems handling 10K+ leads daily, fully autonomous.",
   },
   {
-    title: "AI Personalization",
+    title: "Turn generic outreach into personalization at scale",
     description:
-      "Multi-line icebreakers from real website content, deployed at scale with measurable lift in reply rates.",
+      "AI-generated icebreakers grounded in real prospect data. Where most cold email gets 2 to 3% reply rates, mine hit 5x that consistently.",
   },
   {
-    title: "Reply Management & CRM",
+    title: "Make CRMs talk to each other",
     description:
-      "Multi-platform sync, automated classification, escalation routing across HeyReach and Instantly.",
+      "Multi-platform reply capture, intent classification, unified pipelines. No leads get lost between LinkedIn, email, and the CRM.",
   },
 ] as const;
 
@@ -57,9 +57,6 @@ export type ResolvedCategory = {
  * A logo "chip": a light rounded card containing the brand mark (or its first
  * letter if no logo file exists), paired with the tool name. Designed to
  * contain colored brand logos visually against the dark page background.
- *
- * Hover: card brightens from stone-50 → white, an orange glow appears beneath
- * the chip, tool name shifts from muted to full white.
  */
 function ToolChip({ tool }: { tool: ResolvedTool }) {
   const displayName = DISPLAY_NAME_OVERRIDES[tool.name] ?? tool.name;
@@ -96,8 +93,6 @@ export function AboutContent({ stack }: { stack: ResolvedCategory[] }) {
   const reduce = useReducedMotion();
   const inView = useInView(sectionRef, { once: true, margin: "-80px" });
 
-  // Container coordinates child stagger; children declare their own
-  // hidden/visible transitions via the item variant.
   const containerVariants: Variants = {
     hidden: {},
     visible: {
@@ -125,99 +120,84 @@ export function AboutContent({ stack }: { stack: ResolvedCategory[] }) {
         animate={inView ? "visible" : "hidden"}
         className="mx-auto max-w-5xl px-6 py-32"
       >
-        <div className="grid gap-14 md:grid-cols-[1.4fr_1fr] md:gap-16">
-          {/* ─── LEFT: narrative ───────────────────────────────────────── */}
+        {/* ─── Heading (full width) ──────────────────────────────────── */}
+        <motion.div variants={itemVariants}>
+          <SectionNumber number="01" label="ABOUT" />
+        </motion.div>
+
+        <motion.h2
+          variants={itemVariants}
+          className="mt-6 max-w-xl text-balance text-3xl font-medium leading-[1.15] tracking-tight text-foreground md:text-4xl"
+        >
+          Why I do this.
+        </motion.h2>
+
+        {/* ─── Narrative (left) + What I'm best at (right) ───────────── */}
+        <motion.div
+          variants={itemVariants}
+          className="mt-12 grid gap-14 md:grid-cols-[1.4fr_1fr] md:gap-16"
+        >
+          <div className="max-w-prose space-y-6 text-base leading-relaxed text-muted md:text-lg">
+            {NARRATIVE.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+
           <div>
-            <motion.div variants={itemVariants}>
-              <SectionNumber number="01" label="ABOUT" />
-            </motion.div>
-
-            <motion.h2
-              variants={itemVariants}
-              className="mt-6 max-w-xl text-balance text-3xl font-medium leading-[1.15] tracking-tight text-foreground md:text-4xl"
-            >
-              The story behind the systems.
-            </motion.h2>
-
-            <motion.div
-              variants={itemVariants}
-              className="mt-10 max-w-prose space-y-6 text-base leading-relaxed text-muted md:text-lg"
-            >
-              {NARRATIVE.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* ─── RIGHT: capabilities + stack ──────────────────────────── */}
-          <div className="space-y-14">
-            {/* What I'm best at */}
-            <div>
-              <motion.p
-                variants={itemVariants}
-                className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted"
-              >
-                What I&apos;m best at
-              </motion.p>
-
-              <motion.ul
-                variants={itemVariants}
-                className="mt-6 space-y-5"
-              >
-                {CAPABILITIES.map((cap) => (
-                  <li key={cap.title} className="flex gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="mt-[0.55rem] block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
-                    />
-                    <div>
-                      <h3 className="text-sm font-medium text-foreground">
-                        {cap.title}
-                      </h3>
-                      <p className="mt-1 text-sm leading-relaxed text-muted">
-                        {cap.description}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </motion.ul>
-            </div>
-
-            {/* Stack */}
-            <div>
-              <motion.div
-                variants={itemVariants}
-                className="flex items-center gap-3"
-              >
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-                  Stack
-                </p>
-                <span
-                  aria-hidden="true"
-                  className="block h-px flex-1 bg-border-subtle"
-                />
-              </motion.div>
-
-              <motion.div variants={itemVariants} className="mt-6 space-y-6">
-                {stack.map((category) => (
-                  <div
-                    key={category.label}
-                    className="flex flex-col gap-3 sm:flex-row sm:gap-4"
-                  >
-                    <p className="shrink-0 pt-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-subtle sm:w-[110px]">
-                      {category.label}
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+              What I&apos;m best at
+            </p>
+            <ul className="mt-6 space-y-5">
+              {CAPABILITIES.map((cap) => (
+                <li key={cap.title} className="flex gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.55rem] block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                  />
+                  <div>
+                    <h3 className="text-sm font-medium text-foreground">
+                      {cap.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted">
+                      {cap.description}
                     </p>
-                    <div className="grid w-full max-w-[480px] flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
-                      {category.tools.map((tool) => (
-                        <ToolChip key={tool.name} tool={tool} />
-                      ))}
-                    </div>
                   </div>
-                ))}
-              </motion.div>
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </motion.div>
+
+        {/* ─── Stack (full width below) ──────────────────────────────── */}
+        <motion.div variants={itemVariants} className="mt-16">
+          <div className="flex items-center gap-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+              Stack
+            </p>
+            <span
+              aria-hidden="true"
+              className="block h-px flex-1 bg-border-subtle"
+            />
+          </div>
+
+          <div className="mt-8 space-y-6">
+            {stack.map((category) => (
+              <div
+                key={category.label}
+                className="flex flex-col gap-3 sm:flex-row sm:gap-6"
+              >
+                <p className="shrink-0 pt-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-subtle sm:w-[140px]">
+                  {category.label}
+                </p>
+                <div className="flex flex-1 flex-wrap gap-4">
+                  {category.tools.map((tool) => (
+                    <ToolChip key={tool.name} tool={tool} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </motion.div>
     </section>
   );

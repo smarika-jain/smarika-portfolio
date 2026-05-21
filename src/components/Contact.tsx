@@ -74,7 +74,7 @@ export function Contact({ resumeAvailable }: { resumeAvailable: boolean }) {
           />
           <ContactRow
             label="Location"
-            value="Saharanpur, India. Open to remote work only."
+            value="Saharanpur, India."
           />
         </motion.div>
 

@@ -92,7 +92,7 @@ export function FeaturedWork({ projects }: { projects: ProjectMeta[] }) {
           variants={itemVariants}
           className="mt-6 max-w-2xl text-balance text-3xl font-medium leading-[1.15] tracking-tight text-foreground md:text-4xl"
         >
-          What I&apos;ve actually shipped.
+          Systems that run my clients&apos; outbound while they sleep.
         </motion.h2>
 
         {/* ─── Elevated featured project card ────────────────────────── */}

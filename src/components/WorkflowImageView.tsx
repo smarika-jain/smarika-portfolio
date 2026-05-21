@@ -24,6 +24,8 @@ type WorkflowImageViewProps = {
   quality?: number;
   /** Eager-load + high fetch priority. Use for above-the-fold images only. */
   priority?: boolean;
+  /** Override the caption styling (e.g. larger text for result galleries). */
+  captionClassName?: string;
 };
 
 /**
@@ -41,6 +43,7 @@ export function WorkflowImageView({
   maxWidthClass,
   quality = 95,
   priority = false,
+  captionClassName = "mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted",
 }: WorkflowImageViewProps) {
   const [open, setOpen] = useState(false);
 
@@ -79,7 +82,7 @@ export function WorkflowImageView({
       </button>
 
       {caption && (
-        <figcaption className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+        <figcaption className={captionClassName}>
           <AccentSeparators text={caption} />
         </figcaption>
       )}

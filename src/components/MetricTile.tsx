@@ -1,14 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useTransform,
-  animate,
-  useReducedMotion,
-} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, animate, useReducedMotion } from "framer-motion";
 
 type MetricTileProps = {
   /** Headline value, e.g. "129", "10,753", "4-tier". */
@@ -29,9 +22,8 @@ type MetricTileProps = {
 
 /**
  * A clean numeric value: optional "$" prefix, digits (commas/decimal allowed),
- * optional simple suffix (%, x, K, M, +). Excludes ranges ("20 to 30%"),
- * hyphenated ("4-tier") and word ("15 paths", "Eliminated") values, which
- * should not count up.
+ * optional simple suffix (%, x, K, M, +). Excludes ranges, hyphenated, and
+ * word values — those don't count up.
  */
 const NUMERIC_RE = /^(\$?)([\d,]+(?:\.\d+)?)([%xKM+]*)$/;
 
@@ -64,9 +56,11 @@ function formatCount(
 }
 
 /**
- * A single metric callout. Counts up from 0 to its final value over 1.2s on
- * scroll-into-view (numeric values only); compound/word values fade in. The
- * prominent variant adds a subtle background pulse during the count.
+ * A single metric callout. The displayed text is initialized to the real
+ * `value` so it is present in the SSR/static HTML (good for SEO, screen
+ * readers, and no-JS). On scroll-into-view the count-up runs purely on the
+ * client — it animates from 0 to the real value, then settles on the exact
+ * `value`. The static HTML never literally contains "0".
  */
 export function MetricTile({
   value,
@@ -80,27 +74,22 @@ export function MetricTile({
   const parsed = parseMetric(value);
   const shouldCount = parsed.animate && !reduce;
 
-  const count = useMotionValue(0);
-  const display = useTransform(count, (v) =>
-    parsed.animate
-      ? formatCount(v, parsed.prefix, parsed.suffix, parsed.decimals)
-      : value
-  );
+  // Initialized to the real value → SSR + first client render show the number.
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
-    if (!shouldCount || !inView || !parsed.animate) return;
-    const controls = animate(count, parsed.target, {
+    if (!shouldCount || !inView) return;
+    const p = parseMetric(value);
+    if (!p.animate) return;
+    const controls = animate(0, p.target, {
       duration: 1.2,
       ease: "easeOut",
+      onUpdate: (v) =>
+        setDisplay(formatCount(v, p.prefix, p.suffix, p.decimals)),
+      onComplete: () => setDisplay(value),
     });
     return () => controls.stop();
-  }, [shouldCount, inView, parsed, count]);
-
-  const valueNode = shouldCount ? (
-    <motion.span>{display}</motion.span>
-  ) : (
-    value
-  );
+  }, [shouldCount, inView, value]);
 
   const estSuffix = !verified && (
     <sup
@@ -137,7 +126,7 @@ export function MetricTile({
       >
         <p className="flex items-baseline gap-0.5">
           <span className="whitespace-nowrap text-3xl font-medium tracking-tight text-foreground">
-            {valueNode}
+            {display}
           </span>
           {estSuffix}
         </p>
@@ -155,7 +144,7 @@ export function MetricTile({
     >
       <p className="flex items-baseline gap-0.5">
         <span className="text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
-          {valueNode}
+          {display}
         </span>
         {estSuffix}
       </p>
