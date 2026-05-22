@@ -1,0 +1,76 @@
+---
+title: "AI Product-Personalization Engine"
+category: "Outreach"
+client: "D2C / lifestyle brand"
+mode: "Fully Managed"
+description: "AI-generated outreach personalized to each prospect's actual product needs. 81% open rate. 6.57% reply rate. $220K pipeline in 6 weeks."
+stack: ["n8n", "OpenAI GPT-4", "Apify", "Instantly", "Google Sheets"]
+metrics:
+  - label: "Pipeline value generated"
+    value: "$220K"
+    verified: true
+  - label: "Open rate"
+    value: "81%"
+    verified: true
+  - label: "Reply rate"
+    value: "6.57%"
+    verified: true
+  - label: "Qualified opportunities"
+    value: "44"
+    verified: true
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/saintkrafts-personalization.png"
+    caption: "n8n workflow: website scraping + AI product matching + personalized message generation"
+order: 3
+featured: true
+---
+
+## The Problem
+
+The client sold a specific product category. To reach businesses that genuinely needed those products, generic outreach wouldn't cut it. Every prospect had different operational needs, different scales, different product fits. A cold email that said the same thing to every recipient would land in trash. A cold email that referenced their actual operation and matched it to the right product would convert.
+
+But manually researching each prospect's product needs across hundreds of leads was a non-starter.
+
+## What I Built
+
+A fully managed end-to-end system: I sourced the leads, the AI personalized the messaging, the platform delivered the campaigns, and I reported on the results. The client didn't touch a workflow.
+
+### How it works
+
+**1. Scrape company website.** For each lead, n8n pulls the homepage and runs a scrape with rate limiting and retry logic. Companies that blocked scraping are marked and rerouted.
+
+**2. Extract product-relevant context.** Custom extraction logic identifies what the company actually does, what they ship, what scale they operate at, and what packaging or operational needs that implies.
+
+**3. AI generates the message.** OpenAI GPT-4 receives the extracted context plus a detailed copywriting system prompt. The output is a 3-part email specific to that one company. Not "Hi {"{{first_name}}"}, I noticed your company..." templates. Actual references to what they sell, how they ship, what they probably need.
+
+**4. Quality gate.** Every output passes a filter checking for: specificity (one concrete insight, not generic), tone (conversational, no corporate jargon), and grounding (no hallucinated facts about the company).
+
+**5. Deploy to Instantly.** Approved messages get pushed into Instantly campaigns with full personalization data. Multi-touch sequences (initial + 3 follow-ups) run automatically.
+
+**6. Track and report.** Open rates, reply rates, and opportunities tracked weekly. The client gets a one-page report showing what's working and what to double down on.
+
+### Why This Design
+
+This is the "fully managed" version of outbound. The client isn't running anything. They wrote me the ICP, I built the system, I run it, I report. They see the pipeline numbers and the dollar value flowing into their CRM.
+
+The 81% open rate isn't a typo. The targeting + subject line + sender reputation combination was that good. Reply rates of 6.57% are 2 to 3x industry standard for B2B cold email. The result: $220,000 in pipeline value generated in roughly 6 weeks.
+
+## Live Walkthrough
+
+[Loom video pending. Workflow tour coming soon.]
+
+## The Results
+
+Over a 6-week window (Mar 10 to Apr 15):
+
+- **822** outreach sequences started
+- **81%** open rate (industry average: 20 to 40%)
+- **6.57%** reply rate (industry average: 1 to 3%)
+- **44** qualified opportunities generated
+- **$220,000** in pipeline value attributed to this campaign
+
+The 81% open rate is real. It came from extremely targeted ICP work upfront combined with subject lines that referenced the prospect's actual business. When you write to someone about something they recognize as theirs, they open the email.
+
+The system is still running. Numbers continue to climb.

@@ -20,6 +20,8 @@ export type ProjectMeta = {
   metrics: ProjectMetric[];
   order: number;
   featured: boolean;
+  /** Engagement mode, e.g. "Fully Autonomous" | "Human In The Loop" | "Fully Managed". */
+  mode?: string;
 };
 
 /**
@@ -49,6 +51,7 @@ export function getAllProjects(): ProjectMeta[] {
           : [],
         order: typeof data.order === "number" ? data.order : 999,
         featured: data.featured === true,
+        mode: typeof data.mode === "string" ? data.mode : undefined,
       } satisfies ProjectMeta;
     });
 

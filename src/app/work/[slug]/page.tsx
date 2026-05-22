@@ -28,6 +28,7 @@ type BreakdownFrontmatter = {
   description: string;
   stack: string[];
   metrics: BreakdownMetric[];
+  mode?: string;
   loom?: string;
   workflows?: {
     hero?: WorkflowAsset;
@@ -100,6 +101,12 @@ export default async function BreakdownPage({
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
                 {fm.category}
               </p>
+
+              {fm.mode && (
+                <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+                  {fm.mode}
+                </p>
+              )}
 
               <h1 className="mt-4 text-balance text-3xl font-medium leading-[1.1] tracking-tight text-foreground sm:text-4xl md:text-5xl">
                 {fm.title}

@@ -1,0 +1,79 @@
+---
+title: "Lead Router"
+category: "Lead Generation"
+client: "B2B SaaS"
+mode: "Human In The Loop"
+description: "Design micro-campaigns in 5 minutes from a 33K-lead database. Built for ops teams who need surgical targeting at speed."
+stack: ["Google Sheets", "Apps Script", "n8n", "Instantly API", "HeyReach API"]
+metrics:
+  - label: "Leads in master database"
+    value: "33,614"
+    verified: true
+  - label: "Industries targetable"
+    value: "21"
+    verified: true
+  - label: "Micro-campaign setup"
+    value: "5 min"
+    verified: true
+  - label: "Platforms unified"
+    value: "2"
+    verified: true
+loom: ""
+workflows:
+  hero:
+    src: "/workflows/lead-router.png"
+    caption: "Lead Router system: Google Sheets + Apps Script + n8n"
+order: 2
+featured: true
+---
+
+## The Problem
+
+The client had a 33K-lead database but no way to slice it surgically. Every new outreach campaign meant 30 to 60 minutes of manual filtering: pull leads by industry, by seniority, by region, dedupe against past sends, format for Instantly or HeyReach, copy-paste into the platform. Repeat for the next micro-campaign.
+
+For an ops team running multiple campaigns weekly, this was hours of repetitive Excel work that should have been a button click.
+
+## What I Built
+
+A Google Sheet that doubles as a control panel. Each row in the Control tab defines a micro-campaign: industry, seniority, region, city, state, platform, campaign ID. The operator fills in whatever combination they need. One click runs the whole thing.
+
+### How it works
+
+**1. The Google Sheet is the source of truth.** Master DB tab holds all 33,614 leads with 11 attributes per lead (channel, industry, seniority, region, city, state, status, blocked, etc.). Control tab holds the rules. Blocklist tab handles exclusions. Sent Log tracks history.
+
+**2. Apps Script powers the filter engine.** When the operator clicks "Run Automation," the script reads the Control tab, applies AND/OR logic across all filter columns (AND across columns, OR within a column), removes blocklisted contacts, separates clean leads from blocked ones, and writes the result to a Filtered tab for review.
+
+**3. Dry run before commit.** Every operator runs a dry run first. Leads are written to the Filtered tab with checkbox-to-block toggles, but no campaigns are triggered and no statuses change. The operator scans the list, ticks anyone they want to permanently block, and only then runs the live automation.
+
+**4. n8n handles delivery.** Once live, Apps Script triggers a webhook. n8n calls back to fetch the leads as JSON, routes by platform (Instantly or HeyReach), POSTs to the respective API with full personalization data, updates the Master DB status, and appends to the Sent Log.
+
+**5. Blocklist is two-way.** Tick a checkbox in the Filtered tab to block. Untick a pre-ticked checkbox to unblock. Domain-level blocklisting too: add "competitor.com" to the Blocklist tab and every lead from that domain is excluded forever.
+
+### Why This Design
+
+The job here isn't automation for automation's sake. It's giving the operator surgical control without making them think about the plumbing. The Sheet feels like Excel. The result feels like ops engineering.
+
+The 5-minute setup time is verified: from "I need a new micro-campaign" to "leads are being sent" is one row in the Control tab and one click.
+
+## Live Walkthrough
+
+[Loom video pending. Workflow tour coming soon.]
+
+## The Results
+
+Over normal operations:
+
+- **33,614** leads in the active database
+- **21** industry categories targetable in one click
+- **2** outreach platforms routed from a single control panel
+- **5 minutes** from "new campaign idea" to "campaign live"
+
+The operator who runs this hasn't touched a manual filter or copy-paste in months. The Sheet is the only interface they need.
+
+## Documentation
+
+This system shipped with an 8-page operating manual covering the spreadsheet architecture, all menu options, dry-run vs live-run flow, blocklist mechanics, n8n workflow details, JSON output schema, and troubleshooting for the 6 most common failure modes.
+
+Clients get a manual with their system. Every time.
+
+<SOPDownload slug="lead-router" />
