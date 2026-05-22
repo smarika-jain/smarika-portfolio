@@ -26,6 +26,8 @@ type WorkflowImageViewProps = {
   priority?: boolean;
   /** Override the caption styling (e.g. larger text for result galleries). */
   captionClassName?: string;
+  /** Override the wrapping <figure> styling (e.g. drop default margins on cards). */
+  figureClassName?: string;
 };
 
 /**
@@ -44,6 +46,7 @@ export function WorkflowImageView({
   quality = 95,
   priority = false,
   captionClassName = "mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted",
+  figureClassName = "not-prose my-8",
 }: WorkflowImageViewProps) {
   const [open, setOpen] = useState(false);
 
@@ -62,7 +65,7 @@ export function WorkflowImageView({
   }, [open]);
 
   return (
-    <figure className={cn("not-prose my-8", maxWidthClass)}>
+    <figure className={cn(figureClassName, maxWidthClass)}>
       <button
         type="button"
         onClick={() => setOpen(true)}

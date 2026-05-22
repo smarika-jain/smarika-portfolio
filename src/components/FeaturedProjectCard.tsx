@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { MetricTile } from "@/components/MetricTile";
 import { StackTag } from "@/components/StackTag";
 import { AccentSeparators } from "@/components/AccentSeparators";
+import { WorkflowImageView } from "@/components/WorkflowImageView";
 import type { ProjectMeta } from "@/lib/projects";
 
 /**
@@ -11,6 +12,7 @@ import type { ProjectMeta } from "@/lib/projects";
  *   FEATURED (accent) → mode (muted) → title → "Built for {client}" → ...
  */
 export function FeaturedProjectCard({ project }: { project: ProjectMeta }) {
+  const result = project.results?.[0];
   return (
     <article className="group/featured relative overflow-hidden rounded-xl border border-[rgba(249,115,22,0.18)] bg-[#1a140d] p-8 shadow-[inset_0_0_80px_rgba(249,115,22,0.03)] transition-all duration-300 ease-out hover:-translate-y-[3px] hover:border-[rgba(249,115,22,0.35)] md:p-10">
       {/* Top-right warm radial — gives the card its "lit corner" feel */}
@@ -44,6 +46,12 @@ export function FeaturedProjectCard({ project }: { project: ProjectMeta }) {
           {project.description}
         </p>
 
+        {project.supporting && (
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-stone-500">
+            {project.supporting}
+          </p>
+        )}
+
         {project.metrics.length > 0 && (
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {project.metrics.map((metric) => (
@@ -55,6 +63,27 @@ export function FeaturedProjectCard({ project }: { project: ProjectMeta }) {
                 prominent
               />
             ))}
+          </div>
+        )}
+
+        {result?.exists ? (
+          <WorkflowImageView
+            src={result.src}
+            width={result.width}
+            height={result.height}
+            alt={result.alt ?? `${project.title} results`}
+            caption={result.caption}
+            sizes="(min-width: 768px) 720px, 100vw"
+            maxWidthClass="w-full"
+            figureClassName="not-prose mt-8"
+            captionClassName="mt-3 font-mono text-xs tracking-wide text-stone-500"
+            quality={95}
+          />
+        ) : (
+          <div className="mt-8 flex min-h-[280px] w-full items-center justify-center rounded-lg border border-stone-800">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-stone-600">
+              Campaign results pending.
+            </p>
           </div>
         )}
 

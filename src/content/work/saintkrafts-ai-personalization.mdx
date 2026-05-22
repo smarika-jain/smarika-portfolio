@@ -6,7 +6,7 @@ mode: "Fully Managed"
 description: "AI-generated outreach personalized to each prospect's actual product needs. 81% open rate. 6.57% reply rate. $220K pipeline in 6 weeks."
 stack: ["n8n", "OpenAI GPT-4", "Apify", "Instantly", "Google Sheets"]
 metrics:
-  - label: "Pipeline value generated"
+  - label: "Pipeline value attributed"
     value: "$220K"
     verified: true
   - label: "Open rate"
@@ -23,6 +23,10 @@ workflows:
   hero:
     src: "/workflows/saintkrafts-personalization.png"
     caption: "n8n workflow: website scraping + AI product matching + personalized message generation"
+results:
+  - src: "/results/saintkrafts-instantly.png"
+    alt: "Instantly dashboard showing 81% open rate, 6.57% reply rate, 44 opportunities, $220K pipeline"
+    caption: "Instantly campaign dashboard · 6-week window · $220K pipeline attributed"
 order: 3
 featured: true
 ---
@@ -57,10 +61,6 @@ This is the "fully managed" version of outbound. The client isn't running anythi
 
 The 81% open rate isn't a typo. The targeting + subject line + sender reputation combination was that good. Reply rates of 6.57% are 2 to 3x industry standard for B2B cold email. The result: $220,000 in pipeline value generated in roughly 6 weeks.
 
-## Live Walkthrough
-
-[Loom video pending. Workflow tour coming soon.]
-
 ## The Results
 
 Over a 6-week window (Mar 10 to Apr 15):
@@ -74,3 +74,5 @@ Over a 6-week window (Mar 10 to Apr 15):
 The 81% open rate is real. It came from extremely targeted ICP work upfront combined with subject lines that referenced the prospect's actual business. When you write to someone about something they recognize as theirs, they open the email.
 
 The system is still running. Numbers continue to climb.
+
+<ResultsGallery results={props.results} />

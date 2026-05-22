@@ -23,6 +23,13 @@ workflows:
   hero:
     src: "/workflows/lead-router.png"
     caption: "Lead Router system: Google Sheets + Apps Script + n8n"
+results:
+  - src: "/results/lead-router-sidebar.png"
+    alt: "Lead Router live dry-run with 33,614 leads available, filtered to 3 new leads"
+    caption: "Live dry-run output · 33,614 leads filtered in seconds"
+  - src: "/results/lead-router-control-sheet.png"
+    alt: "Lead Router control sheet with multiple campaign rules"
+    caption: "Control sheet: one row per micro-campaign"
 order: 2
 featured: true
 ---
@@ -55,10 +62,6 @@ The job here isn't automation for automation's sake. It's giving the operator su
 
 The 5-minute setup time is verified: from "I need a new micro-campaign" to "leads are being sent" is one row in the Control tab and one click.
 
-## Live Walkthrough
-
-[Loom video pending. Workflow tour coming soon.]
-
 ## The Results
 
 Over normal operations:
@@ -69,6 +72,8 @@ Over normal operations:
 - **5 minutes** from "new campaign idea" to "campaign live"
 
 The operator who runs this hasn't touched a manual filter or copy-paste in months. The Sheet is the only interface they need.
+
+<ResultsGallery results={props.results} />
 
 ## Documentation
 

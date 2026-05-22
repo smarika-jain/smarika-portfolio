@@ -28,6 +28,9 @@ const legacyFullscreenAttrs: Record<string, string> = {
  * signals interactivity without competing with the video.
  */
 export function LoomEmbed({ url, title, caption }: LoomEmbedProps) {
+  // No real video yet — render nothing (no placeholder, no heading).
+  if (!url) return null;
+
   return (
     <figure className="not-prose my-8 max-w-3xl">
       <div className="group/loom relative aspect-video overflow-hidden rounded-lg border border-stone-800 bg-black transition-shadow duration-300 hover:shadow-[0_0_24px_rgba(249,115,22,0.08)]">
