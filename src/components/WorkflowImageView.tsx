@@ -28,13 +28,6 @@ type WorkflowImageViewProps = {
   captionClassName?: string;
   /** Override the wrapping <figure> styling (e.g. drop default margins on cards). */
   figureClassName?: string;
-  /**
-   * Crop the rendered (non-lightbox) image into a fixed aspect-ratio box with
-   * `object-cover object-top`, so tall screenshots show their top portion
-   * instead of dominating the layout. The lightbox always opens the full,
-   * uncropped image. Used by homepage featured cards.
-   */
-  crop?: boolean;
 };
 
 /**
@@ -54,7 +47,6 @@ export function WorkflowImageView({
   priority = false,
   captionClassName = "mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted",
   figureClassName = "not-prose my-8",
-  crop = false,
 }: WorkflowImageViewProps) {
   const [open, setOpen] = useState(false);
 
@@ -78,13 +70,7 @@ export function WorkflowImageView({
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`View full size: ${alt}`}
-        className={cn(
-          "block w-full cursor-zoom-in overflow-hidden rounded-lg border border-stone-800 transition-shadow duration-300 hover:shadow-[0_0_32px_rgba(249,115,22,0.06)]",
-          // In crop mode the button becomes a fixed widescreen box (4:3 on
-          // mobile, 16:9 from md up) capped at 400px tall, so no single
-          // screenshot dominates the card.
-          crop && "relative aspect-[4/3] max-h-[400px] md:aspect-video"
-        )}
+        className="block w-full cursor-zoom-in overflow-hidden rounded-lg border border-stone-800 transition-shadow duration-300 hover:shadow-[0_0_32px_rgba(249,115,22,0.06)]"
       >
         <Image
           src={src}
@@ -94,11 +80,7 @@ export function WorkflowImageView({
           sizes={sizes}
           quality={quality}
           priority={priority}
-          className={cn(
-            crop
-              ? "absolute inset-0 h-full w-full object-cover object-top"
-              : "block h-auto w-full"
-          )}
+          className="block h-auto w-full"
         />
       </button>
 
