@@ -78,6 +78,7 @@ export function FeaturedProjectCard({ project }: { project: ProjectMeta }) {
             figureClassName="not-prose mt-8"
             captionClassName="mt-3 font-mono text-xs tracking-wide text-stone-500"
             quality={95}
+            crop
           />
         ) : (
           <div className="mt-8 flex min-h-[280px] w-full items-center justify-center rounded-lg border border-stone-800">
