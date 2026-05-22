@@ -70,7 +70,11 @@ export function WorkflowImageView({
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`View full size: ${alt}`}
-        className="block w-full cursor-zoom-in overflow-hidden rounded-lg border border-stone-800 transition-shadow duration-300 hover:shadow-[0_0_32px_rgba(249,115,22,0.06)]"
+        // Cap at the image's intrinsic width and center it, so small/portrait
+        // screenshots (e.g. a 415px sidebar) display at true size instead of
+        // being upscaled to fill the container and turning huge + blurry.
+        style={{ maxWidth: width }}
+        className="mx-auto block w-full cursor-zoom-in overflow-hidden rounded-lg border border-stone-800 transition-shadow duration-300 hover:shadow-[0_0_32px_rgba(249,115,22,0.06)]"
       >
         <Image
           src={src}
