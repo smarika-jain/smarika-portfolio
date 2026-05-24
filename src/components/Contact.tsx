@@ -43,7 +43,7 @@ export function Contact({ resumeAvailable }: { resumeAvailable: boolean }) {
         className="mx-auto max-w-5xl px-6 py-32"
       >
         <motion.div variants={itemVariants}>
-          <SectionNumber number="04" label="GET IN TOUCH" />
+          <SectionNumber number="03" label="GET IN TOUCH" />
         </motion.div>
 
         <motion.h2
